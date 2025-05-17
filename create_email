@@ -1,0 +1,26 @@
+#!/bin/bash
+
+# Usage: ./create-cloudflare-alias.sh alias@example.com destination@example.com
+
+# Input arguments
+ALIAS="$aaaaxxxx"
+DESTINATION="$globalxx004@gmail.com"
+
+# Required environment variables
+CLOUDFLARE_API_TOKEN="${bRmfViTDKBdkjT2ivb-L7jGP8FIIJzcNSvgBTiF7:?Set CLOUDFLARE_API_TOKEN}"
+CLOUDFLARE_ZONE_ID="${89be4d9bebd576c21609b08058169ddb:?Set CLOUDFLARE_ZONE_ID}"
+
+# API endpoint
+API_URL="https://api.cloudflare.com/client/v4/zones/$CLOUDFLARE_ZONE_ID/email/routing/addresses"
+
+# Make the API call
+response=$(curl -s -X POST "$API_URL" \
+  -H "Authorization: Bearer $CLOUDFLARE_API_TOKEN" \
+  -H "Content-Type: application/json" \
+  --data "{
+    \"email\": \"$ALIAS\",
+    \"destination_address\": \"$DESTINATION\"
+  }")
+
+# Output the result
+echo "$response" | jq
